@@ -1,0 +1,101 @@
+﻿@model IEnumerable<WebApplication2.Models.SalesOrders>
+
+@{
+    ViewBag.Title = "SearchOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SearchOrder</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequiredDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShippedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipperID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Freight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipRegion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipPostalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShipCountry)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in ViewBag.list) {
+    <tr>
+        <td>
+            @item.OrderID
+        </td>
+        <td>
+            @item.CustomerID
+        </td>
+        <td>
+            @item.EmployeeID
+        </td>
+        <td>
+            @item.OrderDate
+        </td>
+        <td>
+            @item.RequiredDate
+        </td>
+        <td>
+            @item.ShippedDate
+        </td>
+        <td>
+            @item.ShipperID
+        </td>
+        <td>
+            @item.Freight
+        </td>
+        <td>
+            @item.ShipAddress
+        </td>
+        <td>
+            @item.ShipCity
+        </td>
+        <td>
+            @item.ShipRegion
+        </td>
+        <td>
+            @item.ShipPostalCode
+        </td>
+        <td>
+            @item.ShipCountry
+        </td>
+    </tr>
+}
+
+</table>

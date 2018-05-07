@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>訂單查詢</h2>
+
+@using (Html.BeginForm("SearchOrder", "Order"))
+{
+<table>
+    <tr>
+        <td>
+            訂單編號：
+        </td>
+        <td>
+            <input type="text" id="OrderId" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            客戶名稱：
+        </td>
+        <td>
+            <input type="text" id="CustomerName" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            負責員工：
+        </td>
+        <td>
+            <select name="EmployeeName"></select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            出貨公司：
+        </td>
+        <td>
+            <select name="ShipperName"></select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            訂購日期：
+        </td>
+        <td>
+            <input type="date" name="OrderdDate" placeholder="2015-05-02">
+        </td>
+        <td>
+            出貨日期：
+        </td>
+        <td>
+            <input type="date" name="ShippedDate" placeholder="2015-05-02">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            需要日期：
+        </td>
+        <td>
+            <input type="date" name="RequiredDate" placeholder="2015-05-02">
+        </td>
+    </tr>
+    <tr>
+        <td><input type="submit" value="查詢" /></td>
+        <td><input type="reset" value="清除" /></td>
+        <td>
+            @Html.ActionLink("新增訂單","InsertOrder","Order")
+        </td>
+    </tr>
+</table>
+
+}
