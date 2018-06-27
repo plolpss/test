@@ -2,69 +2,98 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
+using WebApplication2.Daos;
 
 namespace WebApplication2.Models
 {
     public class SalesOrdersService
     {
-        private string GetConnStr()
+        /// <summary>
+        /// 取得 Order by 訂單編號
+        /// </summary>
+        /// <param name="orderID">訂單編號</param>
+        /// <returns></returns>
+        public SalesOrders GetOrder(int orderID)
         {
-            return System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+            SalesOrdersDao dao = new SalesOrdersDao();
+            return dao.GetOrderById(orderID);
         }
-        public List<SalesOrders> Find()
+
+        /// <summary>
+        /// 取得 Orders by 條件
+        /// </summary>
+        /// <returns></returns>
+        public IList<SalesOrders> GetOrders(OrderQueryArg arg)
         {
-            //建立資料庫連線
-            string connStr = this.GetConnStr();
-            SqlConnection conn = new SqlConnection(connStr);
-            //撰寫SQL語法
-            string sql = @"SELECT * FROM [Sales].[Orders]";
-            //connection及sql語法傳入sqldataAdapter
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sql,conn);
-            //宣告DataSet物件
-            DataSet ds = new DataSet();
-            //將資料放入
-            dataAdapter.Fill(ds);
+            CustomerService customerService = new CustomerService();
 
-            DataTable FindData = ds.Tables[0];
+            SalesOrdersDao orderDao = new SalesOrdersDao();
+            // 取得所有訂單後進行篩選  (注意: 此處應將查詢條件串入SQL中為較好之寫法)
+            IEnumerable<SalesOrders> currentOrders = orderDao.GetAllOrders();
 
-            List<SalesOrders> list = new List<SalesOrders>();
-            foreach(DataRow item in FindData.Rows)
+            // 訂單編號
+            if (arg.OrderID.HasValue)
             {
-                string shipdate;
-                if (item["ShippedDate"] != null)
-                {
-                    shipdate = item["ShippedDate"].ToString();
-                }
-                else
-                {
-                    shipdate = " ";
-                }
-                //建立salesorders的模型
-                SalesOrders model = new SalesOrders
-                {
-                    OrderID = int.Parse(item["OrderID"].ToString()),
-                    CustomerID = int.Parse(item["CustomerID"].ToString()),
-                    EmployeeID = int.Parse(item["EmployeeID"].ToString()),
-                    OrderDate = DateTime.Parse(item["OrderDate"].ToString()),
-                    RequiredDate = DateTime.Parse(item["RequiredDate"].ToString()),
-                    ShippedDate = DateTime.Parse(shipdate),
-                    ShipperID = int.Parse(item["ShipperID"].ToString()),
-                    Freight = Decimal.Parse(item["Freight"].ToString()),
-                    ShipAddress = (string)item["ShipAddress"],
-                    ShipCity = (string)item["ShipCity"],
-                    ShipRegion = (string)item["ShipRegion"],
-                    ShipPostalCode = (string)item["ShipPostalCode"],
-                    ShipCountry = (string)item["ShipCountry"],
-
-                };
-                list.Add(model);
+                currentOrders = currentOrders.Where(m => m.OrderID == arg.OrderID.Value);
             }
-           
-            return list;
 
+            // 客戶名稱 (like 查詢)
+            if (!string.IsNullOrWhiteSpace(arg.CompanyName))
+            {
+                currentOrders =
+                    currentOrders.Where(
+                        m => customerService.GetCompanyName(m.CustomerID).Contains(arg.CompanyName)
+                    );
+            }
+
+            // 員工編號
+            if (arg.EmployeeID.HasValue)
+            {
+                currentOrders = currentOrders.Where(m => m.EmployeeID == arg.EmployeeID.Value);
+            }
+
+            // 出貨公司
+            if (arg.ShipperID.HasValue)
+            {
+                currentOrders = currentOrders.Where(m => m.ShipperID == arg.ShipperID.Value);
+            }
+
+            return currentOrders.OrderBy(m => m.OrderID).ToList();
         }
-        
+
+        /// <summary>
+        /// 新增 Order
+        /// </summary>
+        /// <param name="order">欲新增的訂單資料</param>
+        public void InsOrder(SalesOrders order)
+        {
+            SalesOrdersDao orderDao = new SalesOrdersDao();
+            orderDao.AddNewOrderReturnNewOrderId(order);
+        }
+
+        /// <summary>
+        /// 更新 Order
+        /// </summary>
+        /// <param name="order">欲更新的訂單資料</param>
+        public void UpdOrder(SalesOrders order)
+        {
+            SalesOrdersDao orderDao = new SalesOrdersDao();
+            orderDao.UpdateOrder(order);
+        }
+
+        /// <summary>
+        /// 刪除 Order
+        /// </summary>
+        /// <param name="orderID">訂單編號</param>
+        public void DelOrder(int orderID)
+        {
+            SalesOrdersDao orderDao = new SalesOrdersDao();
+            orderDao.DeleteOrder(orderID);
+        }
+
     }
+
 }

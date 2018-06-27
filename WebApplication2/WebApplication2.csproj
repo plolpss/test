@@ -105,28 +105,42 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Daos\BaseDao.cs" />
+    <Compile Include="Daos\CustomersDao.cs" />
+    <Compile Include="Daos\EmployeesDao.cs" />
+    <Compile Include="Daos\SalesOrdersDao.cs" />
+    <Compile Include="Daos\ProductsDao.cs" />
+    <Compile Include="Daos\ShippersDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomerService.cs" />
+    <Compile Include="Models\EmployeeService.cs" />
     <Compile Include="Models\HREmployees.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderQueryArg.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductService.cs" />
     <Compile Include="Models\SalesCustomer.cs" />
     <Compile Include="Models\SalesOrders.cs" />
     <Compile Include="Models\SalesOrdersService.cs" />
     <Compile Include="Models\SalesShippers.cs" />
+    <Compile Include="Models\ShipperService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Order\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Order\xSearchOrder.cshtml" />
-    <Content Include="Views\Order\SearchOrder.cshtml" />
+    <Content Include="Views\Order\Query.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Order\OrderList.cshtml" />
+    <Content Include="Views\Order\CreateOrder.cshtml" />
+    <Content Include="Views\Order\UpdateOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
